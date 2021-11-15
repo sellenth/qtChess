@@ -11,12 +11,14 @@ CONFIG += c++11
 SOURCES += \
     bishop.cpp \
     board.cpp \
+    humanplayer.cpp \
     king.cpp \
     knight.cpp \
     main.cpp \
     mainwindow.cpp \
     pawn.cpp \
     piece.cpp \
+    player.cpp \
     queen.cpp \
     renderarea.cpp \
     rook.cpp
@@ -25,11 +27,13 @@ HEADERS += \
     Coord.h \
     bishop.h \
     board.h \
+    humanplayer.h \
     king.h \
     knight.h \
     mainwindow.h \
     pawn.h \
     piece.h \
+    player.h \
     queen.h \
     renderarea.h \
     rook.h

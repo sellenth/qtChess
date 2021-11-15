@@ -2,6 +2,7 @@
 #define BOARD_H
 
 #include <vector>
+#include <QMouseEvent>
 #include <QPainter>
 #include <piece.h>
 #include <pawn.h>
@@ -10,7 +11,8 @@
 #include <king.h>
 #include <queen.h>
 #include <rook.h>
-#include<QDebug>
+#include <player.h>
+#include <humanplayer.h>
 
 
 class Board
@@ -19,7 +21,13 @@ public:
     Board();
     void drawBoard(QPainter* painter, int rWidth, int rHeight);
     void drawGrid();
+    void drawActiveCells();
     void drawPieces();
+    void handleClickEvent(QMouseEvent *event);
+    Player* p1;
+    Player* p2;
+    Player* currPlayer;
+    std::vector<Coord> activeCells;
 
     std::vector<std::unique_ptr<Piece>> pieces;
 

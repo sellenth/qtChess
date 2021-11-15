@@ -2,6 +2,7 @@
 #define RENDERAREA_H
 
 #include <QWidget>
+#include <QMouseEvent>
 #include <QPainter>
 #include <QCoreApplication>
 #include <algorithm>
@@ -18,6 +19,7 @@ public:
 
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;
+    void mousePressEvent(QMouseEvent *event) override;
 
 public slots:
     void setShape(Shape shape);
