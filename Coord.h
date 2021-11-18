@@ -3,7 +3,7 @@
 
 enum PieceType {Pawn, Bishop, Knight, King, Queen, Rook};
 enum Color {Black, White};
-enum File {A, B, C, D, E, F, G, H};
+enum File {A, B, C, D, E, F, G, H, MAX};
 
 struct Coord{
     File file;

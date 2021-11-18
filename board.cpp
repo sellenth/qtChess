@@ -5,7 +5,9 @@ Board::Board()
     p1 = new humanPlayer("Player 1", White);
     p2 = new humanPlayer("Player 2", Black);
     currPlayer = p1;
-    parseFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+    //parseFEN("rnbqkbnr/pppppppp/8/8/8/6p1/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+    parseFEN("rnbqkbnr/pppppppp/8/8/8/6p1/PPPPPPP1/RNBQKBNR w KQkq - 0 1");
+    //parseFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 }
 
 void Board::parseFEN(std::string fenString){
@@ -99,9 +101,8 @@ void Board::drawActiveCells(){
         drawActiveCell(selectedPiece->mCoord);
     }
 
-    for (const auto& cell : activeCells){
+    for (const auto& cell : legalMoves){
         drawActiveCell(cell);
-
     }
 
     mPainter->setBrush(QBrush(Qt::black, Qt::NoBrush));
@@ -109,7 +110,7 @@ void Board::drawActiveCells(){
 }
 
 void Board::handleClickEvent(QMouseEvent *event){
-    activeCells.clear();
+    legalMoves.clear();
 
     int mouseX = (event->position().toPoint().x() - gridPadding) / gridSideLength;
     int mouseY = 7 - (event->position().toPoint().y() / gridSideLength);
@@ -120,15 +121,28 @@ void Board::handleClickEvent(QMouseEvent *event){
         selectedPiece = piece;
     }
 
-    for (const auto& legalC : selectedPiece->getLegalMoves()){
-        activeCells.push_back(legalC);
-    }
+    if (selectedPiece){
+        legalMoves = selectedPiece->getLegalMoves(pieces);
 
-
-    if (isLegalMove(coordClicked)){
-        //pass
+        if (isLegalMove(coordClicked)){
+            removePieceFromCoord(coordClicked);
+            selectedPiece->moveToCoord(coordClicked);
+            legalMoves.clear();
+            selectedPiece = nullptr;
+            currPlayer == p1 ? currPlayer = p2 : currPlayer = p1;
+        }
+        qDebug() << mouseX << ' ' << mouseY;
     }
-    qDebug() << mouseX << ' ' << mouseY;
+}
+
+void Board::removePieceFromCoord(Coord c){
+    for (auto it = pieces.begin(); it != pieces.end(); it++){
+        auto& piece = *it;
+        if (piece->mCoord.file == c.file && piece->mCoord.rank == c.rank){
+            pieces.erase(it);
+            break;
+        }
+    }
 }
 
 bool Board::isLegalMove(Coord c){
@@ -137,7 +151,7 @@ bool Board::isLegalMove(Coord c){
         return false;
     }
 
-    for (const auto& legalC : selectedPiece->getLegalMoves()){
+    for (const auto& legalC : legalMoves){
         if (c.file == legalC.file && c.rank == legalC.rank){
             return true;
         }

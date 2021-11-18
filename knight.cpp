@@ -6,6 +6,6 @@ Knight::Knight(Coord coord, Color color)
 {
 }
 
-std::vector<Coord> Knight::getLegalMoves(){
+std::vector<Coord> Knight::getLegalMoves(std::vector<std::shared_ptr<Piece>>& otherPieces){
     std::vector<Coord> legalMoves;
 }

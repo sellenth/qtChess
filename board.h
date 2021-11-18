@@ -26,7 +26,7 @@ public:
     Player* p1;
     Player* p2;
     Player* currPlayer;
-    std::vector<Coord> activeCells;
+    std::vector<Coord> legalMoves;
     std::vector<std::shared_ptr<Piece>> pieces;
     std::shared_ptr<Piece> selectedPiece;
 
@@ -37,6 +37,7 @@ private:
     void drawPieces();
     void parseFEN(std::string fenString);
     bool isLegalMove(Coord c);
+    void removePieceFromCoord(Coord c);
     int gridSideLength;
     int gridPadding;
     QPainter* mPainter;

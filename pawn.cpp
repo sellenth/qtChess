@@ -7,18 +7,38 @@ Pawn::Pawn(Coord coord, Color color)
 {
 }
 
-std::vector<Coord> Pawn::getLegalMoves(){
+std::vector<Coord> Pawn::getLegalMoves(std::vector<std::shared_ptr<Piece>>& otherPieces){
     std::vector<Coord> legalMoves;
-    if (mColor == Black){
-        legalMoves.push_back(Coord{File(mCoord.file), mCoord.rank - 1});
+    Coord candidateCoord;
+
+    // standard movement
+    candidateCoord = { File(mCoord.file), mColor == Black ? mCoord.rank - 1 : mCoord.rank + 1 };
+    if (coordInBounds(candidateCoord) && !pieceObstructs(candidateCoord, otherPieces)) {
+        legalMoves.push_back(candidateCoord);
+
         if(firstMove){
-            legalMoves.push_back(Coord{File(mCoord.file), mCoord.rank - 2});
-        }
-    } else {
-        legalMoves.push_back(Coord{File(mCoord.file), mCoord.rank + 1});
-        if(firstMove){
-            legalMoves.push_back(Coord{File(mCoord.file), mCoord.rank + 2});
+            candidateCoord = { File(mCoord.file), mColor == Black ? mCoord.rank - 2 : mCoord.rank + 2 };
+            if (coordInBounds(candidateCoord) && !pieceObstructs(candidateCoord, otherPieces)) {
+                legalMoves.push_back(candidateCoord);
+            }
         }
     }
+
+    // attacking movement
+    candidateCoord = { File(mCoord.file - 1), mColor == Black ? mCoord.rank - 1 : mCoord.rank + 1 };
+    if (coordInBounds(candidateCoord) && canAttack(candidateCoord, otherPieces)){
+        legalMoves.push_back(candidateCoord);
+    }
+
+    candidateCoord = { File(mCoord.file + 1), mColor == Black ? mCoord.rank - 1 : mCoord.rank + 1 };
+    if (coordInBounds(candidateCoord) && canAttack(candidateCoord, otherPieces)){
+        legalMoves.push_back(candidateCoord);
+    }
+
     return legalMoves;
+}
+
+void Pawn::moveToCoord(Coord coord){
+    Piece::moveToCoord(coord);
+    firstMove = false;
 }

@@ -6,6 +6,6 @@ Queen::Queen(Coord coord, Color color)
 {
 }
 
-std::vector<Coord> Queen::getLegalMoves(){
+std::vector<Coord> Queen::getLegalMoves(std::vector<std::shared_ptr<Piece>>& otherPieces){
     std::vector<Coord> legalMoves;
 }

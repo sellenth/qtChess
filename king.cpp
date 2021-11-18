@@ -6,6 +6,6 @@ King::King(Coord coord, Color color)
 {
 }
 
-std::vector<Coord> King::getLegalMoves(){
+std::vector<Coord> King::getLegalMoves(std::vector<std::shared_ptr<Piece>>& otherPieces){
     std::vector<Coord> legalMoves;
 }

@@ -6,6 +6,6 @@ Bishop::Bishop(Coord coord, Color color)
 {
 }
 
-std::vector<Coord> Bishop::getLegalMoves(){
+std::vector<Coord> Bishop::getLegalMoves(std::vector<std::shared_ptr<Piece>>& otherPieces){
     std::vector<Coord> legalMoves;
 }

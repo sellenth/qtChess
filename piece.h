@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <Coord.h>
+#include <memory>
 
 class Piece
 {
@@ -14,9 +15,12 @@ public:
     PieceType mPiece;
     std::string imgLocation;
 
-    virtual std::vector<Coord> getLegalMoves() = 0;
-    bool pieceObstructs(Coord c);
-    void moveToCoord(Coord coord);
+    virtual std::vector<Coord> getLegalMoves(std::vector<std::shared_ptr<Piece>>& otherPieces) = 0;
+    bool pieceObstructs(Coord c, std::vector<std::shared_ptr<Piece>>& otherPieces);
+    bool canAttack(Coord c, std::vector<std::shared_ptr<Piece>>& otherPieces);
+    bool canAttackOrEmpty(Coord c, std::vector<std::shared_ptr<Piece>>& otherPieces);
+    virtual void moveToCoord(Coord coord);
+    bool coordInBounds(Coord coord);
 
 };
 
