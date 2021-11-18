@@ -20,18 +20,21 @@ class Board
 public:
     Board();
     void drawBoard(QPainter* painter, int rWidth, int rHeight);
-    void drawGrid();
-    void drawActiveCells();
-    void drawPieces();
     void handleClickEvent(QMouseEvent *event);
+    std::shared_ptr<Piece> getPieceAtCoord(Coord c);
+
     Player* p1;
     Player* p2;
     Player* currPlayer;
     std::vector<Coord> activeCells;
-
-    std::vector<std::unique_ptr<Piece>> pieces;
+    std::vector<std::shared_ptr<Piece>> pieces;
+    std::shared_ptr<Piece> selectedPiece;
 
 private:
+    void drawGrid();
+    void drawActiveCell(Coord c);
+    void drawActiveCells();
+    void drawPieces();
     void parseFEN(std::string fenString);
     int gridSideLength;
     int gridPadding;

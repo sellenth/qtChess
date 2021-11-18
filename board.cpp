@@ -2,8 +2,8 @@
 
 Board::Board()
 {
-    p1 = new humanPlayer("Player 1");
-    p2 = new humanPlayer("Player 2");
+    p1 = new humanPlayer("Player 1", White);
+    p2 = new humanPlayer("Player 2", Black);
     currPlayer = p1;
     parseFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 }
@@ -20,24 +20,24 @@ void Board::parseFEN(std::string fenString){
         }
         switch (tolower((int)(fenString[i]))){
         case 'p':
-            pieces.push_back(std::make_unique<class Pawn>((Coord){currFile, currRank}, fenString[i] == 'p' ? Color::Black : Color::White));
+            pieces.push_back(std::make_shared<class Pawn>((Coord){currFile, currRank}, fenString[i] == 'p' ? Color::Black : Color::White));
             currFile = File(currFile + 1);
             break;
         case 'b':
             if (piecePlacement) {
-                pieces.push_back(std::make_unique<class Bishop>((Coord){currFile, currRank}, fenString[i] == 'b' ? Color::Black : Color::White));
+                pieces.push_back(std::make_shared<class Bishop>((Coord){currFile, currRank}, fenString[i] == 'b' ? Color::Black : Color::White));
                 currFile = File(currFile + 1);
             } else {
                 currPlayer = p2;
             }
             break;
         case 'n':
-            pieces.push_back(std::make_unique<class Knight>((Coord){currFile, currRank}, fenString[i] == 'n' ? Color::Black : Color::White));
+            pieces.push_back(std::make_shared<class Knight>((Coord){currFile, currRank}, fenString[i] == 'n' ? Color::Black : Color::White));
             currFile = File(currFile + 1);
             break;
         case 'k':
             if (piecePlacement){
-                pieces.push_back(std::make_unique<class King>((Coord){currFile, currRank}, fenString[i] == 'k' ? Color::Black : Color::White));
+                pieces.push_back(std::make_shared<class King>((Coord){currFile, currRank}, fenString[i] == 'k' ? Color::Black : Color::White));
                 currFile = File(currFile + 1);
             } else {
                 fenString[i] == 'k' ? p2->canCastleKingSide = true : p1->canCastleKingSide = true;
@@ -45,14 +45,14 @@ void Board::parseFEN(std::string fenString){
             break;
         case 'q':
             if (piecePlacement){
-                pieces.push_back(std::make_unique<class Queen>((Coord){currFile, currRank}, fenString[i] == 'q' ? Color::Black : Color::White));
+                pieces.push_back(std::make_shared<class Queen>((Coord){currFile, currRank}, fenString[i] == 'q' ? Color::Black : Color::White));
                 currFile = File(currFile + 1);
             } else {
                 fenString[i] == 'q' ? p2->canCastleQueenSide = true : p1->canCastleQueenSide = true;
             }
             break;
         case 'r':
-            pieces.push_back(std::make_unique<class Rook>((Coord){currFile, currRank}, fenString[i] == 'r' ? Color::Black : Color::White));
+            pieces.push_back(std::make_shared<class Rook>((Coord){currFile, currRank}, fenString[i] == 'r' ? Color::Black : Color::White));
             currFile = File(currFile + 1);
             break;
         case 'w':
@@ -85,15 +85,24 @@ void Board::drawGrid(){
     }
 }
 
+
+void Board::drawActiveCell(Coord c){
+    mPainter->drawRect(QRect(c.file * gridSideLength + gridPadding,
+                             (7 - c.rank) * gridSideLength,
+                             gridSideLength, gridSideLength));
+}
+
 void Board::drawActiveCells(){
     mPainter->setBrush(QBrush(Qt::yellow, Qt::SolidPattern));
     mPainter->setCompositionMode(QPainter::CompositionMode_SourceAtop);
     for (const auto& cell : activeCells){
-        mPainter->drawRect(QRect(cell.file * gridSideLength + gridPadding,
-                                 (7 - cell.rank) * gridSideLength,
-                                 gridSideLength, gridSideLength));
+        drawActiveCell(cell);
+
     }
 
+    if (selectedPiece){
+        drawActiveCell(selectedPiece->mCoord);
+    }
 
     mPainter->setBrush(QBrush(Qt::black, Qt::NoBrush));
     mPainter->setCompositionMode(QPainter::CompositionMode_SourceOver);
@@ -102,9 +111,26 @@ void Board::drawActiveCells(){
 void Board::handleClickEvent(QMouseEvent *event){
     int mouseX = (event->position().toPoint().x() - gridPadding) / gridSideLength;
     int mouseY = 7 - (event->position().toPoint().y() / gridSideLength);
-    activeCells.push_back(Coord{File(mouseX), mouseY});
-    //Coord cellClicked = (Coord){File(mouseX), mouseY};
+    Coord coordClicked = (Coord){File(mouseX), mouseY};
+
+    std::shared_ptr<Piece> piece = getPieceAtCoord(coordClicked);
+    if (piece != nullptr && selectedPiece != piece){
+        selectedPiece = piece;
+    }
     qDebug() << mouseX << ' ' << mouseY;
+}
+
+
+std::shared_ptr<Piece> Board::getPieceAtCoord(Coord c){
+    for (size_t i = 0; i < pieces.size(); i++){
+        auto& piece = pieces[i];
+        if (piece->mCoord.file == c.file
+                && piece->mCoord.rank == c.rank
+                && piece->mColor == currPlayer->teamColor){
+            return pieces.at(i);
+        }
+    }
+    return nullptr;
 }
 
 void Board::drawPieces(){

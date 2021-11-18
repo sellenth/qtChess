@@ -6,7 +6,7 @@
 class humanPlayer: public Player
 {
 public:
-    humanPlayer(std::string pName);
+    humanPlayer(std::string pName, Color color);
     Coord makeMove() override;
 };
 
