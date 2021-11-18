@@ -6,8 +6,8 @@ Board::Board()
     p2 = new humanPlayer("Player 2", Black);
     currPlayer = p1;
     //parseFEN("rnbqkbnr/pppppppp/8/8/8/6p1/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-    parseFEN("rnbqkbnr/pppppppp/8/8/8/6p1/PPPP1PPP/RNBQKBNR w KQkq - 0 1");
-    //parseFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+    parseFEN("rnbqkbnr/pppppppp/8/8/4N3/6p1/PPPP1PPP/RNBQKBNR w KQkq - 0 1");
+    //parseFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"); //Standard game start
 }
 
 void Board::parseFEN(std::string fenString){
@@ -112,22 +112,33 @@ void Board::drawActiveCells(){
 void Board::handleClickEvent(QMouseEvent *event){
     legalMoves.clear();
 
+    // Get the cell Coordinates of wherever was just clicked
     int mouseX = (event->position().toPoint().x() - gridPadding) / gridSideLength;
     int mouseY = 7 - (event->position().toPoint().y() / gridSideLength);
     Coord coordClicked = (Coord){File(mouseX), mouseY};
 
+    // If a piece exists on the square (and is one that current player owns)
+    // then make it the currently selected piece
     std::shared_ptr<Piece> piece = getPieceAtCoord(coordClicked);
     if (piece != nullptr && selectedPiece != piece){
         selectedPiece = piece;
     }
 
+    // If a piece is selected, get its legal moves.
     if (selectedPiece){
         legalMoves = selectedPiece->getLegalMoves(pieces);
 
+        // if a legal move is selected, move the piece there
+        // If the move is an attack, there will be a piece
+        // there so remove it that's the case
         if (isLegalMove(coordClicked)){
             removePieceFromCoord(coordClicked);
             selectedPiece->moveToCoord(coordClicked);
             legalMoves.clear();
+            if (selectedPiece->shouldPromote()){
+                removePieceFromCoord(coordClicked);
+                pieces.push_back(std::make_shared<class Queen>(coordClicked, currPlayer->teamColor));
+            }
             selectedPiece = nullptr;
             currPlayer == p1 ? currPlayer = p2 : currPlayer = p1;
         }

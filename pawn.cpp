@@ -42,3 +42,11 @@ void Pawn::moveToCoord(Coord coord){
     Piece::moveToCoord(coord);
     firstMove = false;
 }
+
+bool Pawn::shouldPromote(){
+    if ((mColor == White && mCoord.rank == 7)
+            || (mColor == Black && mCoord.rank == 0)){
+        return true;
+    }
+    return false;
+}

@@ -10,6 +10,7 @@ public:
     bool firstMove;
     std::vector<Coord> getLegalMoves(std::vector<std::shared_ptr<Piece>>& otherPieces) override;
     void moveToCoord(Coord coord) override;
+    bool shouldPromote() override;
 };
 
 #endif // PAWN_H

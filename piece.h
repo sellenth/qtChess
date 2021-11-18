@@ -21,6 +21,7 @@ public:
     bool canAttackOrEmpty(Coord c, std::vector<std::shared_ptr<Piece>>& otherPieces);
     virtual void moveToCoord(Coord coord);
     bool coordInBounds(Coord coord);
+    virtual bool shouldPromote();
 
 };
 

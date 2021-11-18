@@ -26,6 +26,10 @@ bool Piece::canAttack(Coord c, std::vector<std::shared_ptr<Piece>>& otherPieces)
     return false;
 }
 
+bool Piece::shouldPromote(){
+    return false;
+}
+
 void Piece::moveToCoord(Coord coord){
     mCoord = coord;
 }
