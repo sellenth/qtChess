@@ -6,7 +6,7 @@ Board::Board()
     p2 = new humanPlayer("Player 2", Black);
     currPlayer = p1;
     //parseFEN("rnbqkbnr/pppppppp/8/8/8/6p1/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-    parseFEN("rnbqkbnr/pppppppp/8/8/8/6p1/PPPPPPP1/RNBQKBNR w KQkq - 0 1");
+    parseFEN("rnbqkbnr/pppppppp/8/8/8/6p1/PPPP1PPP/RNBQKBNR w KQkq - 0 1");
     //parseFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 }
 

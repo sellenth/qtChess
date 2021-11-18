@@ -14,10 +14,15 @@ std::vector<Coord> Rook::getLegalMoves(std::vector<std::shared_ptr<Piece>>& othe
     // Up movement
     for (int i = 1; i < 8; i++){
         candidateCoord = { File(mCoord.file), mCoord.rank + i};
-        if (coordInBounds(candidateCoord) && canAttackOrEmpty(candidateCoord, otherPieces)){
-            legalMoves.push_back(candidateCoord);
+        if (coordInBounds(candidateCoord)){
             if (canAttack(candidateCoord, otherPieces)){
+                legalMoves.push_back(candidateCoord);
                 break;
+            }
+            if (pieceObstructs(candidateCoord, otherPieces)){
+                break;
+            } else {
+                legalMoves.push_back(candidateCoord);
             }
         }
     }
@@ -25,10 +30,15 @@ std::vector<Coord> Rook::getLegalMoves(std::vector<std::shared_ptr<Piece>>& othe
     // Down movement
     for (int i = 1; i < 8; i++){
         candidateCoord = { File(mCoord.file), mCoord.rank - i};
-        if (coordInBounds(candidateCoord) && canAttackOrEmpty(candidateCoord, otherPieces)){
-            legalMoves.push_back(candidateCoord);
+        if (coordInBounds(candidateCoord)){
             if (canAttack(candidateCoord, otherPieces)){
+                legalMoves.push_back(candidateCoord);
                 break;
+            }
+            if (pieceObstructs(candidateCoord, otherPieces)){
+                break;
+            } else {
+                legalMoves.push_back(candidateCoord);
             }
         }
     }
@@ -36,10 +46,15 @@ std::vector<Coord> Rook::getLegalMoves(std::vector<std::shared_ptr<Piece>>& othe
     // Left movement
     for (int i = 1; i < 8; i++){
         candidateCoord = { File(mCoord.file - i), mCoord.rank};
-        if (coordInBounds(candidateCoord) && canAttackOrEmpty(candidateCoord, otherPieces)){
-            legalMoves.push_back(candidateCoord);
+        if (coordInBounds(candidateCoord)){
             if (canAttack(candidateCoord, otherPieces)){
+                legalMoves.push_back(candidateCoord);
                 break;
+            }
+            if (pieceObstructs(candidateCoord, otherPieces)){
+                break;
+            } else {
+                legalMoves.push_back(candidateCoord);
             }
         }
     }
@@ -47,10 +62,15 @@ std::vector<Coord> Rook::getLegalMoves(std::vector<std::shared_ptr<Piece>>& othe
     // Right movement
     for (int i = 1; i < 8; i++){
         candidateCoord = { File(mCoord.file + i), mCoord.rank};
-        if (coordInBounds(candidateCoord) && canAttackOrEmpty(candidateCoord, otherPieces)){
-            legalMoves.push_back(candidateCoord);
+        if (coordInBounds(candidateCoord)){
             if (canAttack(candidateCoord, otherPieces)){
+                legalMoves.push_back(candidateCoord);
                 break;
+            }
+            if (pieceObstructs(candidateCoord, otherPieces)){
+                break;
+            } else {
+                legalMoves.push_back(candidateCoord);
             }
         }
     }

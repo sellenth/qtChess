@@ -2,6 +2,8 @@
 #define QUEEN_H
 
 #include <piece.h>
+#include <rook.h>
+#include <bishop.h>
 
 class Queen: public Piece
 {
