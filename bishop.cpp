@@ -6,6 +6,6 @@ Bishop::Bishop(Coord coord, Color color)
 {
 }
 
-Coord Bishop::getLegalMoves(){
-    return (Coord){A, 1};
+std::vector<Coord> Bishop::getLegalMoves(){
+    std::vector<Coord> legalMoves;
 }

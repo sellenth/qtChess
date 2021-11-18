@@ -6,6 +6,6 @@ King::King(Coord coord, Color color)
 {
 }
 
-Coord King::getLegalMoves(){
-    return (Coord){A, 1};
+std::vector<Coord> King::getLegalMoves(){
+    std::vector<Coord> legalMoves;
 }

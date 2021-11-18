@@ -7,7 +7,7 @@ class King: public Piece
 {
 public:
     King (Coord coord, Color color);
-    Coord getLegalMoves() override;
+    std::vector<Coord> getLegalMoves() override;
 };
 
 #endif // KING_H

@@ -1,8 +1,9 @@
 #ifndef PIECE_H
 #define PIECE_H
 
-#include <Coord.h>
 #include <string>
+#include <vector>
+#include <Coord.h>
 
 class Piece
 {
@@ -13,7 +14,8 @@ public:
     PieceType mPiece;
     std::string imgLocation;
 
-    virtual Coord getLegalMoves() = 0;
+    virtual std::vector<Coord> getLegalMoves() = 0;
+    bool pieceObstructs(Coord c);
     void moveToCoord(Coord coord);
 
 };

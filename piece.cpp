@@ -7,3 +7,7 @@ Piece::Piece(Coord coord, Color color, PieceType piece, std::string loc)
     , imgLocation(loc)
 {
 }
+
+bool Piece::pieceObstructs(Coord c){
+    return true;
+}

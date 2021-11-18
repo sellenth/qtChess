@@ -36,6 +36,7 @@ private:
     void drawActiveCells();
     void drawPieces();
     void parseFEN(std::string fenString);
+    bool isLegalMove(Coord c);
     int gridSideLength;
     int gridPadding;
     QPainter* mPainter;

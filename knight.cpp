@@ -6,6 +6,6 @@ Knight::Knight(Coord coord, Color color)
 {
 }
 
-Coord Knight::getLegalMoves(){
-    return (Coord){A, 1};
+std::vector<Coord> Knight::getLegalMoves(){
+    std::vector<Coord> legalMoves;
 }

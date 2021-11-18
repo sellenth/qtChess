@@ -95,13 +95,13 @@ void Board::drawActiveCell(Coord c){
 void Board::drawActiveCells(){
     mPainter->setBrush(QBrush(Qt::yellow, Qt::SolidPattern));
     mPainter->setCompositionMode(QPainter::CompositionMode_SourceAtop);
+    if (selectedPiece){
+        drawActiveCell(selectedPiece->mCoord);
+    }
+
     for (const auto& cell : activeCells){
         drawActiveCell(cell);
 
-    }
-
-    if (selectedPiece){
-        drawActiveCell(selectedPiece->mCoord);
     }
 
     mPainter->setBrush(QBrush(Qt::black, Qt::NoBrush));
@@ -109,6 +109,8 @@ void Board::drawActiveCells(){
 }
 
 void Board::handleClickEvent(QMouseEvent *event){
+    activeCells.clear();
+
     int mouseX = (event->position().toPoint().x() - gridPadding) / gridSideLength;
     int mouseY = 7 - (event->position().toPoint().y() / gridSideLength);
     Coord coordClicked = (Coord){File(mouseX), mouseY};
@@ -117,7 +119,32 @@ void Board::handleClickEvent(QMouseEvent *event){
     if (piece != nullptr && selectedPiece != piece){
         selectedPiece = piece;
     }
+
+    for (const auto& legalC : selectedPiece->getLegalMoves()){
+        activeCells.push_back(legalC);
+    }
+
+
+    if (isLegalMove(coordClicked)){
+        //pass
+    }
     qDebug() << mouseX << ' ' << mouseY;
+}
+
+bool Board::isLegalMove(Coord c){
+    // If there's no piece selected, there is nothing to move: therefore illegal
+    if (selectedPiece == nullptr){
+        return false;
+    }
+
+    for (const auto& legalC : selectedPiece->getLegalMoves()){
+        if (c.file == legalC.file && c.rank == legalC.rank){
+            return true;
+        }
+    }
+
+    // if king and enemy pieces attack legal move
+    return false;
 }
 
 

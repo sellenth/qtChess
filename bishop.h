@@ -7,7 +7,7 @@ class Bishop: public Piece
 {
 public:
     Bishop (Coord coord, Color color);
-    Coord getLegalMoves() override;
+    std::vector<Coord> getLegalMoves() override;
 };
 
 #endif // BISHOP_H

@@ -7,7 +7,8 @@ class Pawn: public Piece
 {
 public:
     Pawn(Coord coord, Color color);
-    Coord getLegalMoves() override;
+    bool firstMove;
+    std::vector<Coord> getLegalMoves() override;
 };
 
 #endif // PAWN_H

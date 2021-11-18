@@ -6,6 +6,6 @@ Queen::Queen(Coord coord, Color color)
 {
 }
 
-Coord Queen::getLegalMoves(){
-    return (Coord){A, 1};
+std::vector<Coord> Queen::getLegalMoves(){
+    std::vector<Coord> legalMoves;
 }
