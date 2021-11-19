@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QLabel>
-#include <QComboBox>
 #include <QGridLayout>
 #include <renderarea.h>
 
@@ -19,14 +18,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
-    void shapeChanged();
-
-
 private:
     Ui::MainWindow *ui;
     RenderArea *renderArea;
-    QLabel *shapeLabel;
-    QComboBox *shapeComboBox;
+    QLabel *turnLabel;
 };
 #endif // MAINWINDOW_H

@@ -142,8 +142,23 @@ void Board::handleClickEvent(QMouseEvent *event){
             selectedPiece = nullptr;
             currPlayer == p1 ? currPlayer = p2 : currPlayer = p1;
         }
-        qDebug() << mouseX << ' ' << mouseY;
+        //qDebug() << "King is being attacked: " << coordIsAttacked();
     }
+}
+
+
+
+
+
+bool Board::coordIsAttacked(Coord c){
+    for (const auto& piece : pieces){
+        for (const auto& move : piece->getLegalMoves(pieces)) {
+            if (move.file == c.file && move.rank == c.rank){
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 void Board::removePieceFromCoord(Coord c){
@@ -162,8 +177,8 @@ bool Board::isLegalMove(Coord c){
         return false;
     }
 
-    for (const auto& legalC : legalMoves){
-        if (c.file == legalC.file && c.rank == legalC.rank){
+    for (const auto& move : legalMoves){
+        if (c.file == move.file && c.rank == move.rank){
             return true;
         }
     }

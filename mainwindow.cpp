@@ -8,39 +8,23 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     renderArea = new RenderArea;
-    shapeComboBox = new QComboBox;
-    shapeComboBox->addItem(tr("Polygon"), RenderArea::Polygon);
-    shapeComboBox->addItem(tr("Rectangle"), RenderArea::Rect);
 
-    shapeLabel = new QLabel(tr("&Shape:"));
-    shapeLabel->setBuddy(shapeComboBox);
-
-    connect(shapeComboBox, QOverload<int>::of(&QComboBox::activated), this, &MainWindow::shapeChanged);
+    turnLabel = new QLabel();
+    renderArea->label = turnLabel;
+    renderArea->updateLabelText();
 
     QGridLayout *mainLayout = new QGridLayout;
 
+    mainLayout->setRowStretch(0, 5);
     mainLayout->setColumnStretch(0, 1);
-    mainLayout->setColumnStretch(3, 1);
-    mainLayout->addWidget(renderArea, 0, 0, 1, 4);
-    mainLayout->addWidget(shapeLabel, 2, 0, Qt::AlignRight);
-    mainLayout->addWidget(shapeComboBox, 2, 1);
+    mainLayout->addWidget(renderArea, 0, 0, 1, 5);
+    mainLayout->addWidget(turnLabel, 1, 0, Qt::AlignCenter);
 
     QWidget *widget = new QWidget();
     widget->setLayout(mainLayout);
     setCentralWidget(widget);
 
-    shapeChanged();
-
 }
-
-void MainWindow::shapeChanged()
-{
-    const int IdRole = Qt::UserRole;
-    RenderArea::Shape shape = RenderArea::Shape(shapeComboBox->itemData(
-                shapeComboBox->currentIndex(), IdRole).toInt());
-    renderArea->setShape(shape);
-}
-
 MainWindow::~MainWindow()
 {
     delete ui;

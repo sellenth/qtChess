@@ -38,6 +38,7 @@ private:
     void parseFEN(std::string fenString);
     bool isLegalMove(Coord c);
     void removePieceFromCoord(Coord c);
+    bool coordIsAttacked(Coord c);
     int gridSideLength;
     int gridPadding;
     QPainter* mPainter;

@@ -3,7 +3,6 @@
 RenderArea::RenderArea(QWidget *parent)
     : QWidget(parent)
 {
-    shape = Polygon;
     board = Board();
     setBackgroundRole(QPalette::Base);
 }
@@ -22,14 +21,14 @@ QSize RenderArea::minimumSizeHint() const
     return QSize(100, 100);
 }
 
-void RenderArea::setShape(Shape shape){
-    this->shape = shape;
-    update();
-}
-
 void RenderArea::mousePressEvent(QMouseEvent *event){
     board.handleClickEvent(event);
+    updateLabelText();
     this->update();
+}
+
+void RenderArea::updateLabelText(){
+    label->setText(QString("It's %1's turn").arg(board.currPlayer->teamColor == 0 ? "Black" : "White"));
 }
 
 void RenderArea::paintEvent(QPaintEvent * /* event */)

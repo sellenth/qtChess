@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QMouseEvent>
+#include <QLabel>
 #include <QPainter>
 #include <QCoreApplication>
 #include <algorithm>
@@ -12,24 +13,21 @@ class RenderArea : public QWidget
 {
     Q_OBJECT
 public:
-    enum Shape { Polygon, Rect };
-
     explicit RenderArea(QWidget *parent = nullptr);
     ~RenderArea();
 
     QSize minimumSizeHint() const override;
     QSize sizeHint() const override;
     void mousePressEvent(QMouseEvent *event) override;
+    void updateLabelText();
+    QLabel* label;
 
-public slots:
-    void setShape(Shape shape);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
 
 private:
     Board board;
-    Shape shape;
 
 };
 
